@@ -53,9 +53,14 @@ TOOLS = [
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "memory": {"type": "string"}
+                    "memories": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
                 },
-                "required": ["memory"]
+                "required": ["memories"]
             },
         },
     },
@@ -69,36 +74,37 @@ def get_embeddings(string_to_embed):
     )
     return response.data[0].embedding
 
-def save_memory(memory):
-    # Step 1: Embed the memory
-    vector = get_embeddings(memory)
-    # Step 2: Build the vector document to be stored
-    user_id = "1234"
-    path = "user/{user_id}/recall/{event_id}"
-    current_time = datetime.now(tz=timezone.utc)
-    path = path.format(
-        user_id=user_id,
-        event_id=str(uuid.uuid4()),
-    )
-    documents = [
-        {
-            "id": str(uuid.uuid4()),
-            "values": vector,
-            "metadata": {
-                "payload": memory,
-                "path": path,
-                "timestamp": str(current_time),
-                "type": "recall", # Define the type of document i.e recall memory
-                "user_id": user_id,
-            },
-        }
-    ]
-    # Step 3: Store the vector document in the vector database
-    index.upsert(
-        vectors=documents,
-        namespace=os.getenv("PINECONE_NAMESPACE")
-    )
-    return "Memory saved successfully"
+def save_memory(memories):
+    for memory in memories:
+        # Step 1: Embed the memory
+        vector = get_embeddings(memory)
+        # Step 2: Build the vector document to be stored
+        user_id = "1234"
+        path = "user/{user_id}/recall/{event_id}"
+        current_time = datetime.now(tz=timezone.utc)
+        path = path.format(
+            user_id=user_id,
+            event_id=str(uuid.uuid4()),
+        )
+        documents = [
+            {
+                "id": str(uuid.uuid4()),
+                "values": vector,
+                "metadata": {
+                    "payload": memory,
+                    "path": path,
+                    "timestamp": str(current_time),
+                    "type": "recall", # Define the type of document i.e recall memory
+                    "user_id": user_id,
+                },
+            }
+        ]
+        # Step 3: Store the vector document in the vector database
+        index.upsert(
+            vectors=documents,
+            namespace=os.getenv("PINECONE_NAMESPACE")
+        )
+    return f"{len(memories)} memories saved successfully"
 
 def load_memories(prompt):
     user_id = "1234"
