@@ -9,13 +9,13 @@ from agent.prompts import get_system_prompt
 # 2. Set the page config
 ########################################################
 st.set_page_config(
-    page_title="💬 Data Agent",
+    page_title="🧠 Memory AI Agent",
     page_icon=":material/chat_bubble_outline:",
     layout="centered",
     initial_sidebar_state="collapsed",
 )
 # Title
-st.title("💬 Sakila AI Agent")
+st.title("🧠 Memory AI Agent")
 
 ########################################################
 # 3. Initialize the conversation history

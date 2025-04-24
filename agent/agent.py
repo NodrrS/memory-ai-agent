@@ -1,7 +1,7 @@
 import json
 from dotenv import load_dotenv
 from openai import OpenAI
-from agent.tools import get_weather, get_data_df, save_memory
+from agent.tools import save_memory
 from agent.tools import TOOLS
 
 
