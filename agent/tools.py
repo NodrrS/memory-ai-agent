@@ -34,20 +34,6 @@ TOOLS = [
     {
         "type": "function",
         "function": {
-            "name": "get_data_df",
-            "description": "Get data from the database and return a pandas dataframe",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "sql_query": {"type": "string"}
-                },
-                "required": ["sql_query"]
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
             "name": "save_memory",
             "description": "Save a memory to the vector database",
             "parameters": {
