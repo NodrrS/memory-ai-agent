@@ -1,3 +1,4 @@
+#  <!-- source .venv/bin/activate && streamlit run app.py -->
 # 🧠 Memory AI Agent
 
 A Streamlit-based AI assistant with persistent memory capabilities using Pinecone vector database and OpenAI. This agent can remember your preferences, past conversations, and personal information to provide more personalized and contextual responses over time.

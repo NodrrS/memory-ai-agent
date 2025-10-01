@@ -1,28 +1,35 @@
 ########################################################
 # 1. Import the necessary libraries
 ########################################################
+import os
+from openai import OpenAI
 import streamlit as st
 from agent.agent import agent
-from agent.prompts import get_system_prompt
+from agent.prompt import build_system_prompt  # merged prompt with memory + Sakila
+from dotenv import load_dotenv
+
+
+
+load_dotenv()
 
 ########################################################
 # 2. Set the page config
 ########################################################
 st.set_page_config(
-    page_title="🧠 Memory AI Agent",
+    page_title="🧠📊 Memory + Sakila Agent",
     page_icon=":material/chat_bubble_outline:",
     layout="centered",
     initial_sidebar_state="collapsed",
 )
-# Title
-st.title("🧠 Memory AI Agent")
+
+st.title("🧠📊 Memory + Sakila Agent")
 
 ########################################################
 # 3. Initialize the conversation history
 ########################################################
 if "messages" not in st.session_state:
     st.session_state["messages"] = [
-        {"role": "system", "content": get_system_prompt("")},
+        {"role": "system", "content": build_system_prompt("")},
         {"role": "assistant", "content": "How can I help you?"}
     ]
 
@@ -39,7 +46,7 @@ prompt = st.chat_input()
 
 if prompt:
     # Update system prompt with memories
-    st.session_state["messages"][0]["content"] = get_system_prompt(prompt)
+    st.session_state["messages"][0]["content"] = build_system_prompt(prompt)
 
     # Add the user's message to the conversation
     st.session_state.messages.append({"role": "user", "content": prompt})

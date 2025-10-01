@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from agent.tools import save_memory
 from agent.tools import TOOLS
+from agent.tools import get_weather
+from agent.tools import get_data_df
 
 
 load_dotenv()
@@ -30,6 +32,10 @@ def agent(messages):
             tool_call_arguments = json.loads(tool_call.function.arguments)
             if tool_call.function.name == "save_memory":
                 return save_memory(tool_call_arguments["memories"])
+            elif tool_call.function.name == "get_weather":
+                return get_weather(tool_call_arguments["location"])
+            elif tool_call.function.name == "get_data_df":
+                return get_data_df(tool_call_arguments["sql_query"])
     else:
         # If there are no tool calls, return the response content
         return response.content
